@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +86,21 @@ public class Controller {
 			throw new NoContactFoundException("Given contact is not Updated");
 		}
 	}
+	
+	@DeleteMapping("/deleteContactById/{contactId}")
+	public ResponseEntity<String>deleteContactById(@PathVariable int contactId)
+	{
+		boolean deleteId = this.contactServiceI.deleteContactById(contactId);
+		if(deleteId==true) {
+			return new ResponseEntity<String>("Delete record successfully ",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("This Id Not available In the Record To delete It ",HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	
+	
+	
 	
 	
 }

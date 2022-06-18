@@ -14,6 +14,9 @@ public interface ContactServiceI {
 	public List<Contact> getContactByName(String contactName);
     public Contact getById(int contactId);
     public boolean updateContact(Contact contact);
+    // hard delete
+    
+    public boolean deleteContactById(Integer contactId );
 	
 	
    
