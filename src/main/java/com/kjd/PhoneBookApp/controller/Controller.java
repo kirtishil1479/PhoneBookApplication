@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kjd.PhoneBookApp.exception.NoContactFoundException;
 import com.kjd.PhoneBookApp.model.Contact;
 import com.kjd.PhoneBookApp.service.ContactServiceI;
 
@@ -40,20 +43,49 @@ public class Controller {
 	public ResponseEntity<List<Contact>> getAllContact(){
 		
 		List<Contact> contact = contactServiceI.allcontact();
-		if(contact!=null) {
+		if(!contact.isEmpty()) {
 			return new ResponseEntity<List<Contact>>(contact,HttpStatus.OK);
 		}else {
-			String msg="List is not available";
-			return new ResponseEntity(msg,HttpStatus.BAD_REQUEST);
+			throw new NoContactFoundException("Contact list Not found"+contact);
 		}
+	}
+	
+	@GetMapping(value="/getContactByName/{contactName}",produces = "application/json")
+	public ResponseEntity<List<Contact>>getContactByName(@PathVariable  String contactName){
 		
+		 List<Contact> name = contactServiceI.getContactByName(contactName);
+		 if(!name.isEmpty()) {
+			 return new ResponseEntity<List<Contact>>(name,HttpStatus.OK);
+		 }else {
+			 throw new NoContactFoundException("Given name not found in the list:"+contactName);
+		 }
+		}
+	
+	@GetMapping("/getContactById/{contactId}")
+	public ResponseEntity<Contact>getContactById(@PathVariable int contactId){
+		Contact byId = contactServiceI.getById(contactId);
+		if(byId!=null) {
+			return new ResponseEntity(byId,HttpStatus.OK);
+		}else {
+			
+			throw new NoContactFoundException("Given contact Id not found:"+contactId);
+		}
 		
 	}
 	
 	
-	
-	
-	
+	@PutMapping("/editContact")
+	public ResponseEntity<String> updatecontact(Contact contact)
+	{
+		boolean updateContact = this.contactServiceI.updateContact(contact);
+		if(updateContact==true)
+		{
+			return new ResponseEntity<String>("Contact updated successfully",HttpStatus.OK);
+		}else {
+			throw new NoContactFoundException("Given contact is not Updated");
+		}
+	}
 	
 	
 }
+	
