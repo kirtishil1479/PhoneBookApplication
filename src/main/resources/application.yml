@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/PhoneBookApp?useSSL=false
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+      
+  app1:
+           message:
+                   SaveSuccess:Contact save successfully
+                   Savefail:Contact Fail to Save
+                   DataNotFound:Data Not Found In DataBase
+                   SuccessUpdate:Contact Updated SuccessFully
+                   FailUpdate:Contact Failed To Update
+                   SuccessDelete:Contact Deleted SuccessFully 
+                   FailDelete:Contact Failed to Delete Record
